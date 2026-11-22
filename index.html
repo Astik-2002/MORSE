@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="MORSE: Moving-Object Segmentation and Metric Localization via Radar-Visual Bundle Adjustment">
+  <meta name="description" content="MORSE is a real-time radar-stereo(-IMU) SLAM pipeline that jointly estimates metric ego-motion and the velocities of moving objects using radar Doppler in a two-stage bundle adjustment.">
+  <meta name="keywords" content="radar SLAM, moving object segmentation, radar Doppler, stereo SLAM, bundle adjustment, autonomous driving, ORB-SLAM3, dynamic object tracking">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="MORSE: Moving-Object Segmentation and Metric Localization via Radar-Visual Bundle Adjustment">
+  <meta property="og:description" content="Real-time radar-stereo(-IMU) SLAM that estimates metric ego-motion and moving-object velocities with radar Doppler.">
+  <meta property="og:url" content="https://astik-2002.github.io/MORSE/">
+  <meta property="og:image" content="https://astik-2002.github.io/MORSE/static/images/posters/truckscenes_03.jpg">
+  <meta property="og:image:alt" content="MORSE moving-object segmentation on a TruckScenes highway scene">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MORSE: Moving-Object Segmentation and Metric Localization via Radar-Visual Bundle Adjustment">
+  <meta name="twitter:description" content="Real-time radar-stereo(-IMU) SLAM that estimates metric ego-motion and moving-object velocities with radar Doppler.">
+  <meta name="twitter:image" content="https://astik-2002.github.io/MORSE/static/images/posters/truckscenes_03.jpg">
+
+  <meta name="citation_title" content="MORSE: Moving-Object Segmentation and Metric Localization via Radar-Visual Bundle Adjustment">
+
+  <meta name="theme-color" content="#2563eb">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <title>MORSE: Moving-Object Segmentation and Metric Localization via Radar-Visual Bundle Adjustment</title>
+
+  <!-- Critical CSS -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <!-- Non-critical CSS -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+
+  <style>
+    .button[disabled] { opacity: 1; cursor: default; }
+    .soon { font-weight: 400; opacity: 0.75; margin-left: 0.35em; }
+    .stat-row { margin-top: 1.5rem; }
+    .stat { text-align: center; padding: 1rem 0.5rem; }
+    .stat .num { font-size: 2.4rem; font-weight: 800; line-height: 1.1; color: #2563eb; }
+    .stat .lbl { font-size: 0.95rem; color: #4a4a4a; margin-top: 0.4rem; }
+    .figure-caption { font-size: 0.95rem; color: #4a4a4a; margin-top: 0.5rem; }
+    .results-table td, .results-table th { text-align: center !important; vertical-align: middle; white-space: nowrap; }
+    .results-table td:first-child, .results-table th:first-child { text-align: left !important; }
+    .results-table tr.ours td { background: #eef4ff; }
+    .scene-tag { margin-right: 0.3em; }
+  </style>
+</head>
+<body>
+
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <main id="main-content">
+
+  <!-- Title -->
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">MORSE: Moving-Object Segmentation and Metric Localization via Radar-Visual Bundle Adjustment</h1>
+
+            <div class="publication-links has-text-centered">
+              <span class="button is-normal is-rounded is-dark" disabled>
+                <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                <span>Paper<span class="soon">(to be released soon)</span></span>
+              </span>
+              <span class="button is-normal is-rounded is-dark" disabled>
+                <span class="icon"><i class="fab fa-github"></i></span>
+                <span>Code<span class="soon">(to be released soon)</span></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teaser video -->
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <video poster="static/images/posters/truckscenes_03.jpg" id="teaser" autoplay controls muted loop playsinline height="100%" preload="metadata">
+          <source src="static/videos/truckscenes_03.mp4" type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered">
+          MORSE on a MAN TruckScenes highway scene. <b>Left:</b> top-down map with the
+          estimated velocity of each moving object. <b>Right:</b> camera view with tracked objects, their
+          moving/static state, speed and range.
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- Abstract -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              In this work we propose MORSE, a real-time pipeline for simultaneous moving object segmentation,
+              ego motion estimation and mapping that utilizes Radar, Stereo images and optional IMU. Radar Doppler
+              breaks the circular dependency, since it measures metric ego velocity independently of vision, so ego
+              motion and object velocities can be estimated in sequence. This also enables robust localization in
+              visually degenerate environments such as night-time environments and environments with rain, low light
+              and glare. On multiple scenes in highway, urban and mountain environments and night, day, night-rain
+              and day-rain sequences from four datasets, MORSE reduces the localization error 3.7&times; relative to
+              stereo ORB-SLAM3 on the highway and 17&times; relative to stereo-inertial ORB-SLAM3 at night, and
+              estimates a correct velocity for 84% of moving objects at 120&ndash;200&nbsp;m, where vision-based
+              baselines estimate none beyond 60&nbsp;m.
+            </p>
+          </div>
+
+          <div class="columns stat-row is-mobile is-multiline is-centered">
+            <div class="column is-one-third-tablet is-full-mobile stat">
+              <div class="num">3.7&times;</div>
+              <div class="lbl">lower localization error than stereo ORB-SLAM3 on the highway</div>
+            </div>
+            <div class="column is-one-third-tablet is-full-mobile stat">
+              <div class="num">17&times;</div>
+              <div class="lbl">lower localization error than stereo-inertial ORB-SLAM3 at night</div>
+            </div>
+            <div class="column is-one-third-tablet is-full-mobile stat">
+              <div class="num">84%</div>
+              <div class="lbl">of moving objects at 120&ndash;200&nbsp;m get a correct velocity</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Method -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3 has-text-centered">Method</h2>
+          <div class="content has-text-justified">
+
+            <p>
+              Ego-motion and moving-object estimation are circular: an object's velocity can only be measured
+              relative to an ego-motion estimate, and the ego-motion estimate is corrupted by the moving objects it
+              does not know about. <b>Radar breaks this circular dependence.</b> Its static returns give a metric ego
+              velocity independent of the visual estimate, while each return on an object directly measures its
+              relative radial velocity. Stereo images provide the scene geometry and the semantics of the objects,
+              and an IMU, when available, carries the motion through visually degenerate stretches.
+            </p>
+
+            <div class="has-text-centered">
+              <img src="static/images/morseI.png" alt="MORSE system overview" style="max-width: 75%;" loading="lazy">
+              <p class="figure-caption">MORSE overview. Pink: components added or modified by MORSE;
+                green: unchanged from ORB-SLAM3.</p>
+            </div>
+            <br>
+
+            <p>
+              MORSE builds on ORB-SLAM3's tracking, local-mapping and loop-closing threads and extends them in four
+              places: radar preprocessing, moving-object segmentation in tracking, a two-stage radar-visual local
+              bundle adjustment (BA), and, with an IMU, radar in the inertial BA together with a vision-outage mode.
+            </p>
+
+            <h3 class="title is-5">1. Radar ego velocity and return labelling</h3>
+            <p>
+              A static radar return measures the radar's own velocity along its bearing, so the ego velocity of
+              each scan follows from its static returns by least squares, solved inside RANSAC because the scan also
+              contains returns from moving objects. Returns that agree with the ego velocity form the static set;
+              the rest are labelled dynamic. The velocity is metric and needs no visual scale.
+            </p>
+
+            <h3 class="title is-5">2. Moving-object segmentation and tracking</h3>
+            <p>
+              Instance masks from a YOLO11 segmentation network and radar clusters (grouped by position and
+              ego-compensated radial velocity) define object candidates in each frame. Objects are tracked across
+              frames with Hungarian assignment and a 2D Kalman box filter, and the ORB keypoints on an object are
+              kept out of the static map and assigned to that object.
+            </p>
+
+            <h3 class="title is-5">3. Ego-pose tracking with a radar motion prior</h3>
+            <p>
+              ORB-SLAM3 predicts each frame's pose with a constant-velocity model. MORSE keeps the predicted rotation
+              but replaces the predicted translation with the integrated radar ego velocity. The prediction is
+              therefore metric and independent of past visual motion, which keeps the feature search narrow under
+              sudden speed changes and in weakly textured frames.
+            </p>
+
+            <h3 class="title is-5">4. Two-stage radar-visual local bundle adjustment</h3>
+            <p>
+              <b>Stage 1 (ego BA)</b> adds radar Doppler ego-velocity factors to the stereo reprojection factors,
+              gives each keyframe a world velocity, and estimates a shared <b>stereo scale</b> that corrects the bias
+              in the calibrated stereo baseline online. <b>Stage 2 (object BA)</b> fixes the ego state and estimates
+              each moving object's points and velocity from its stereo observations and its radar Doppler returns.
+              After each Stage-2 BA, an object is labelled <span class="tag is-danger is-light">MOVING</span>,
+              <span class="tag is-light">STATIC</span> or <span class="tag is-warning is-light">POTENTIAL</span>
+              (undecided) from a significance test on its estimated velocity.
+            </p>
+
+            <h3 class="title is-5">5. Stereo-IMU-radar mode</h3>
+            <p>
+              When an IMU is available, the radar ego-velocity factors and scaled stereo factors are added to
+              ORB-SLAM3's visual-inertial BA. An error-state Kalman filter fuses the IMU prediction with the radar
+              ego velocity, so when vision fails (darkness, glare, rain) MORSE dead-reckons on IMU and radar alone
+              and re-attaches to the same map when vision returns, instead of starting a new map.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Qualitative results: TruckScenes -->
+  <section class="hero is-small is-light">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title is-3 has-text-centered">Qualitative Results on MAN TruckScenes</h2>
+        <div class="columns is-centered">
+          <div class="column is-four-fifths">
+            <p class="has-text-justified">
+              Ten 20&nbsp;s scenes covering highway, city and terminal driving in clear, overcast, rain and snow
+              weather, by day, at twilight and in the dark. Each video shows the top-down map with object velocity
+              arrows (left) and the camera view with each tracked object's class, state, speed and range (right).
+            </p>
+          </div>
+        </div>
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item">
+            <video poster="static/images/posters/truckscenes_00.jpg" controls muted loop playsinline preload="none">
+              <source src="static/videos/truckscenes_00.mp4" type="video/mp4">
+            </video>
+            <h2 class="subtitle has-text-centered">Scene 00 &middot; Terminal &middot; Clear &middot; Day</h2>
+          </div>
+          <div class="item">
+            <video poster="static/images/posters/truckscenes_01.jpg" controls muted loop playsinline preload="none">
+              <source src="static/videos/truckscenes_01.mp4" type="video/mp4">
+            </video>
+            <h2 class="subtitle has-text-centered">Scene 01 &middot; Highway &middot; Clear &middot; Dark</h2>
+          </div>
+          <div class="item">
+            <video poster="static/images/posters/truckscenes_02.jpg" controls muted loop playsinline preload="none">
+              <source src="static/videos/truckscenes_02.mp4" type="video/mp4">
+            </video>
+            <h2 class="subtitle has-text-centered">Scene 02 &middot; City &middot; Overcast &middot; Day</h2>
+          </div>
+          <div class="item">
+            <video poster="static/images/posters/truckscenes_03.jpg" controls muted loop playsinline preload="none">
+              <source src="static/videos/truckscenes_03.mp4" type="video/mp4">
+            </video>
+            <h2 class="subtitle has-text-centered">Scene 03 &middot; Highway &middot; Overcast &middot; Day</h2>
+          </div>
+          <div class="item">
+            <video poster="static/images/posters/truckscenes_04.jpg" controls muted loop playsinline preload="none">
+              <source src="static/videos/truckscenes_04.mp4" type="video/mp4">
+            </video>
+            <h2 class="subtitle has-text-centered">Scene 04 &middot; Highway &middot; Overcast &middot; Day</h2>
+          </div>
+          <div class="item">
+            <video poster="static/images/posters/truckscenes_05.jpg" controls muted loop playsinline preload="none">
+              <source src="static/videos/truckscenes_05.mp4" type="video/mp4">
+            </video>
+            <h2 class="subtitle has-text-centered">Scene 05 &middot; Terminal &middot; Rain &middot; Day</h2>
+          </div>
+          <div class="item">
+            <video poster="static/images/posters/truckscenes_06.jpg" controls muted loop playsinline preload="none">
+              <source src="static/videos/truckscenes_06.mp4" type="video/mp4">
+            </video>
+            <h2 class="subtitle has-text-centered">Scene 06 &middot; City &middot; Clear &middot; Twilight</h2>
+          </div>
+          <div class="item">
+            <video poster="static/images/posters/truckscenes_07.jpg" controls muted loop playsinline preload="none">
+              <source src="static/videos/truckscenes_07.mp4" type="video/mp4">
+            </video>
+            <h2 class="subtitle has-text-centered">Scene 07 &middot; City &middot; Snow &middot; Day</h2>
+          </div>
+          <div class="item">
+            <video poster="static/images/posters/truckscenes_08.jpg" controls muted loop playsinline preload="none">
+              <source src="static/videos/truckscenes_08.mp4" type="video/mp4">
+            </video>
+            <h2 class="subtitle has-text-centered">Scene 08 &middot; Highway &middot; Rain &middot; Day</h2>
+          </div>
+          <div class="item">
+            <video poster="static/images/posters/truckscenes_09.jpg" controls muted loop playsinline preload="none">
+              <source src="static/videos/truckscenes_09.mp4" type="video/mp4">
+            </video>
+            <h2 class="subtitle has-text-centered">Scene 09 &middot; City &middot; Clear &middot; Mixed lighting</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Localization -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Localization Accuracy</h2>
+      <div class="columns is-centered is-vcentered">
+        <div class="column is-5 has-text-centered">
+          <img src="static/images/traj_hercules_day.png" alt="Trajectories on HeRCULES mountain-day" loading="lazy">
+          <p class="figure-caption">HeRCULES mountain-day (3.9&nbsp;km): estimated trajectories against ground
+            truth (SE(3)-aligned). MORSE stereo-IMU-radar stays closest to the ground truth.</p>
+        </div>
+        <div class="column is-7">
+          <div class="table-container">
+            <table class="table is-narrow is-hoverable is-fullwidth results-table">
+              <thead>
+                <tr>
+                  <th rowspan="2">Method</th>
+                  <th colspan="2">TruckScenes (10 scenes)</th>
+                  <th colspan="2">HeRCULES day</th>
+                </tr>
+                <tr>
+                  <th>ATE [m]</th><th>Scale</th>
+                  <th>ATE [m]</th><th>Scale</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>ORB-SLAM3 (stereo)</td><td>2.19</td><td>0.981</td><td>50.53</td><td>1.218</td></tr>
+                <tr><td>ORB-SLAM3 (stereo-inertial)</td><td>13.15</td><td>0.917</td><td>26.81</td><td>1.104</td></tr>
+                <tr><td>DynaSLAM</td><td>7.38</td><td>0.984</td><td>58.73</td><td>1.229</td></tr>
+                <tr><td>VDO-SLAM</td><td>14.05</td><td>0.890</td><td>227.44</td><td>0.677</td></tr>
+                <tr><td>DynOSAM</td><td>16.19</td><td>0.900</td><td>crash</td><td>&ndash;</td></tr>
+                <tr><td>GeoRIO</td><td>11.98</td><td>0.886</td><td>40.11</td><td>0.967</td></tr>
+                <tr><td>RadVIO</td><td>261.14</td><td>18.232</td><td>22.49</td><td>1.007</td></tr>
+                <tr class="ours"><td>MORSE (stereo-radar)</td><td>0.33</td><td>1.003</td><td>12.05</td><td>1.035</td></tr>
+                <tr class="ours"><td><b>MORSE (stereo-IMU-radar)</b></td><td><b>0.20</b></td><td><b>1.005</b></td><td><b>2.98</b></td><td><b>0.999</b></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="figure-caption">Absolute trajectory error (ATE, SE(3)-aligned) and Sim(3) scale (ideal 1.0).
+            TruckScenes: mean over scenes; HeRCULES day: mean over 3 runs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Moving objects -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3 has-text-centered">Moving-Object Velocity</h2>
+          <div class="content has-text-justified">
+            <p>
+              Because each radar return on an object measures its radial velocity directly, MORSE estimates object
+              velocities at ranges where stereo depth alone is too noisy. The table gives the share of moving
+              objects segmented by MORSE with a correct velocity, by range.
+            </p>
+          </div>
+          <div class="table-container">
+            <table class="table is-narrow is-hoverable is-fullwidth results-table">
+              <thead>
+                <tr><th>Dataset</th><th>0&ndash;60 m</th><th>60&ndash;120 m</th><th>120&ndash;200 m</th><th>&gt;200 m</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>TruckDrive (highway)</td><td>92%</td><td>91%</td><td>84%</td><td>70%</td></tr>
+                <tr><td>TruckScenes</td><td>61%</td><td>29%</td><td>16%</td><td>&ndash;</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="content has-text-justified">
+            <p>
+              On TruckDrive, MORSE segments 93&ndash;99% of moving objects at every range with a moving precision of
+              1.000. Vision-based dynamic SLAM (VDO-SLAM, DynOSAM) segments about 20% within 60&nbsp;m and almost
+              nothing beyond, and Doppler-only estimators fall to 35&ndash;37% at long range. Without radar in the
+              object stage, MORSE's velocity-correct recall drops from 70% to 17% beyond 200&nbsp;m.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+              This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+              Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
