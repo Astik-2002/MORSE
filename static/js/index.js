@@ -91,108 +91,45 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// Video carousel autoplay when in view
-function setupVideoCarouselAutoplay() {
-    const carouselVideos = document.querySelectorAll('.results-carousel video');
-    
-    if (carouselVideos.length === 0) return;
-    
+// Play videos only while they are on screen, and let each one buffer before it
+// starts so playback doesn't stutter. Off-screen videos (including the looping
+// teaser) are paused so they don't compete for bandwidth with the visible one.
+function setupVideoAutoplay() {
+    const videos = document.querySelectorAll('video');
+    if (videos.length === 0) return;
+
+    const visible = new WeakSet();
+
+    function playWhenReady(video) {
+        if (video.readyState >= 4) { // HAVE_ENOUGH_DATA
+            video.play().catch(e => console.log('Autoplay prevented:', e));
+            return;
+        }
+        video.preload = 'auto';
+        if (video.networkState === HTMLMediaElement.NETWORK_EMPTY) video.load();
+        video.addEventListener('canplaythrough', () => {
+            if (visible.has(video)) {
+                video.play().catch(e => console.log('Autoplay prevented:', e));
+            }
+        }, { once: true });
+    }
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             const video = entry.target;
             if (entry.isIntersecting) {
-                // Video is in view, play it
-                video.play().catch(e => {
-                    // Autoplay failed, probably due to browser policy
-                    console.log('Autoplay prevented:', e);
-                });
+                visible.add(video);
+                playWhenReady(video);
             } else {
-                // Video is out of view, pause it
+                visible.delete(video);
                 video.pause();
             }
         });
     }, {
         threshold: 0.5 // Trigger when 50% of the video is visible
     });
-    
-    carouselVideos.forEach(video => {
-        observer.observe(video);
-    });
-}
 
-// Stall guard: if the playback clock keeps advancing but no new frames are
-// presented (decoder starved after a network hiccup), pause, rewind to the last
-// frame actually shown, wait until enough data is buffered, then resume.
-function setupVideoStallGuard() {
-    const videos = document.querySelectorAll('video');
-    if (!videos.length || !('requestVideoFrameCallback' in HTMLVideoElement.prototype)) return;
-
-    const FROZEN_MS = 1500;      // no new frame for this long while time advances
-    const RESUME_AHEAD_S = 3;    // seconds buffered ahead before resuming
-
-    const visible = new WeakSet();
-    const io = new IntersectionObserver(entries => {
-        entries.forEach(e => e.isIntersecting ? visible.add(e.target) : visible.delete(e.target));
-    });
-
-    function bufferedAhead(v) {
-        for (let i = 0; i < v.buffered.length; i++) {
-            if (v.buffered.start(i) <= v.currentTime + 0.1 && v.buffered.end(i) >= v.currentTime) {
-                return v.buffered.end(i) - v.currentTime;
-            }
-        }
-        return 0;
-    }
-
-    videos.forEach(v => {
-        io.observe(v);
-        const s = { lastWall: performance.now(), lastMedia: 0, ctAtFrame: 0, recovering: false };
-
-        const onFrame = (now, meta) => {
-            s.lastWall = performance.now();
-            s.lastMedia = meta.mediaTime;
-            s.ctAtFrame = v.currentTime;
-            v.requestVideoFrameCallback(onFrame);
-        };
-        v.requestVideoFrameCallback(onFrame);
-        v.addEventListener('play', () => { s.lastWall = performance.now(); s.ctAtFrame = v.currentTime; });
-
-        function recover() {
-            s.recovering = true;
-            v.pause();
-            v.currentTime = s.lastMedia;
-            const tryResume = () => {
-                if (!s.recovering) return cleanup();
-                const end = v.duration || Infinity;
-                if (v.readyState >= 4 || bufferedAhead(v) >= Math.min(RESUME_AHEAD_S, end - v.currentTime - 0.1)) {
-                    cleanup();
-                    s.lastWall = performance.now();
-                    v.play().catch(() => {});
-                }
-            };
-            const cleanup = () => {
-                s.recovering = false;
-                v.removeEventListener('progress', tryResume);
-                v.removeEventListener('canplaythrough', tryResume);
-                v.removeEventListener('seeked', tryResume);
-                clearInterval(poll);
-            };
-            v.addEventListener('progress', tryResume);
-            v.addEventListener('canplaythrough', tryResume);
-            v.addEventListener('seeked', tryResume);
-            const poll = setInterval(tryResume, 500);
-        }
-
-        setInterval(() => {
-            if (s.recovering || v.paused || v.ended || v.seeking) return;
-            if (document.visibilityState !== 'visible' || !visible.has(v)) {
-                s.lastWall = performance.now();
-                return;
-            }
-            const timeMoved = Math.abs(v.currentTime - s.ctAtFrame) > 0.5;
-            if (timeMoved && performance.now() - s.lastWall > FROZEN_MS) recover();
-        }, 500);
-    });
+    videos.forEach(video => observer.observe(video));
 }
 
 $(document).ready(function() {
@@ -212,10 +149,7 @@ $(document).ready(function() {
 	
     bulmaSlider.attach();
     
-    // Setup video autoplay for carousel
-    setupVideoCarouselAutoplay();
-
     // Must run after the carousel is attached so cloned slides are covered too
-    setupVideoStallGuard();
+    setupVideoAutoplay();
 
 })
